@@ -1,14 +1,15 @@
-import * as React from 'react';
-import { StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import BottomTabNavigator from './components/BottomTabNavigator';
-import WelcomeScreen from './components/WelcomeScreen';
+import * as React from "react";
+import { StyleSheet } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import BottomTabNavigator from "./components/BottomTabNavigator";
+import WelcomeScreen from "./components/WelcomeScreen";
+import HomeScreen from "./components/HomeScreen/HomeScreen";
 
 // Import Screens
-import SignUpScreen from './components/screens/SignUpScreen/SignUpScreen';
-import SignInScreen from './components/screens/SignInScreen/SignInScreen';
-import ForgotPasswordScreen from './components/screens/ForgotPasswordScreen/ForgotPasswordScreen';
+import SignUpScreen from "./components/screens/SignUpScreen/SignUpScreen";
+import SignInScreen from "./components/screens/SignInScreen/SignInScreen";
+import ForgotPasswordScreen from "./components/screens/ForgotPasswordScreen/ForgotPasswordScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -39,7 +40,9 @@ const App = () => {
         {!isWelcomeFinished ? (
           <Stack.Screen name="Welcome" component={WelcomeScreen} />
         ) : (
-          <Stack.Screen name="Main" component={BottomTabNavigator} />
+          <>
+            <Stack.Screen name="Home" component={BottomTabNavigator} />
+          </>
         )}
         <Stack.Screen name="Auth" component={AuthStackNavigator} />
       </Stack.Navigator>
@@ -50,7 +53,7 @@ const App = () => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#afd2bc',
+    backgroundColor: "#afd2bc",
   },
 });
 

@@ -57,6 +57,7 @@ const styles = StyleSheet.create ({
       marginVertical: 10,
       justifyContent: 'center',
       paddingVertical: 7, 
+      paddingHorizontal: 20,
     },
     link: {
       color: '#0376a8',

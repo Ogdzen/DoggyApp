@@ -23,15 +23,21 @@ const styles = StyleSheet.create ({
     marginVertical: 10,
   },
   input: {
-    backgroundColor: 'white',
-    width: '100%',
-    borderColor: '#99dbc6',
-    borderWidth: 2,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    padding: 15,
-    marginVertical: 3,
-  
+    flex: 1,
+    width: "100%",
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#f2f2f2',
+    paddingHorizontal: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 
 });
