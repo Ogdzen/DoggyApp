@@ -1,20 +1,57 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import BottomTabNavigator from './components/BottomTabNavigator';
+import WelcomeScreen from './components/WelcomeScreen';
 
-export default function App() {
+// Import Screens
+import SignUpScreen from './components/screens/SignUpScreen/SignUpScreen';
+import SignInScreen from './components/screens/SignInScreen/SignInScreen';
+import ForgotPasswordScreen from './components/screens/ForgotPasswordScreen/ForgotPasswordScreen';
+
+const Stack = createNativeStackNavigator();
+
+const AuthStackNavigator = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="SignIn" component={SignInScreen} />
+      <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+    </Stack.Navigator>
   );
-}
+};
+
+const App = () => {
+  const [isWelcomeFinished, setIsWelcomeFinished] = React.useState(false);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsWelcomeFinished(true);
+    }, 3000); // Adjust the delay here (in milliseconds)
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {!isWelcomeFinished ? (
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        ) : (
+          <Stack.Screen name="Main" component={BottomTabNavigator} />
+        )}
+        <Stack.Screen name="Auth" component={AuthStackNavigator} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#afd2bc',
   },
 });
+
+export default App;
