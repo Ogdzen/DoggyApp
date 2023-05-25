@@ -1,14 +1,20 @@
 import React from "react";
 import { View, Text } from "react-native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+const Stack = createNativeStackNavigator();
 
 const ProfileScreen = ({ route }) => {
   const { name } = route.params;
 
   return (
-    <View>
-      <Text>Profile Page of {name}</Text>
-      {/* Add your profile page content here */}
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ title: `${name}'s Profile` }}
+      />
+    </Stack.Navigator>
   );
 };
 

@@ -1,15 +1,14 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import BottomTabNavigator from "./components/BottomTabNavigator";
-import WelcomeScreen from "./components/WelcomeScreen";
-import HomeScreen from "./components/HomeScreen/HomeScreen";
 
-// Import Screens
-import SignUpScreen from "./components/screens/SignUpScreen/SignUpScreen";
+import WelcomeScreen from "./components/WelcomeScreen";
 import SignInScreen from "./components/screens/SignInScreen/SignInScreen";
+import SignUpScreen from "./components/screens/SignUpScreen/SignUpScreen";
 import ForgotPasswordScreen from "./components/screens/ForgotPasswordScreen/ForgotPasswordScreen";
+import ProfileScreen from "./components/ProfileScreen/ProfileScreen";
+import CustomBottomTabNavigator from "./components/BottomTabNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,25 +34,28 @@ const App = () => {
   }, []);
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {!isWelcomeFinished ? (
-          <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        ) : (
-          <>
-            <Stack.Screen name="Home" component={BottomTabNavigator} />
-          </>
-        )}
-        <Stack.Screen name="Auth" component={AuthStackNavigator} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={styles.root}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {!isWelcomeFinished ? (
+            <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          ) : (
+            <>
+              <Stack.Screen name="Home" component={CustomBottomTabNavigator} />
+              <Stack.Screen name="Profile" component={ProfileScreen} />
+            </>
+          )}
+          <Stack.Screen name="Auth" component={AuthStackNavigator} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: "#afd2bc",
+    backgroundColor: "#fff",
   },
 });
 

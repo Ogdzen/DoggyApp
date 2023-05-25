@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,14 +9,16 @@ import {
   ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import BottomTabNavigator from "../BottomTabNavigator";
-import ProfileScreen from "./ProfileScreen";
+import { createStackNavigator } from "@react-navigation/stack";
 
-const Stack = createNativeStackNavigator();
+import HomeContent from "./HomeConten/HomeContent";
+import ProfileScreen from "../ProfileScreen/ProfileScreen";
+
+const Stack = createStackNavigator();
 
 const HomeScreen = () => {
+  const [isBoxClicked, setIsBoxClicked] = useState(false);
+
   const data = [
     {
       id: 1,
@@ -54,196 +56,115 @@ const HomeScreen = () => {
   ];
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeContent}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Profile"
-          component={ProfileScreen}
-          options={({ route }) => ({
-            title: `${route.params.name}'s Profile`,
-          })}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
-
-const HomeContent = ({ navigation }) => {
-  return (
-    <View style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.root}>
-          <View style={styles.header}>
-            <Text style={styles.title}>Home</Text>
-            <TouchableOpacity style={styles.profileIcon} onPress={() => {}}>
-              {/* Replace the placeholder image with your profile image */}
-              <Image
-                source={require("/Users/solisticg/AwesomeProject/assets/peach-logo.png")}
-                style={styles.profileImage}
-              />
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.searchContainer}>
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search"
-              placeholderTextColor="#888"
-            />
-            <TouchableOpacity style={styles.filterIcon}>
-              <Ionicons name="filter-outline" size={18} color="#888" />
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.titleContainer}>
-            <Text style={styles.nearYouTitle}>Near You</Text>
-            <TouchableOpacity style={styles.viewMoreButton} onPress={() => {}}>
-              <Text style={styles.viewMoreText}>View More</Text>
-            </TouchableOpacity>
-          </View>
-
+    <View style={styles.container}>
+      <React.Fragment>
+        <ScrollView>
+          <Text style={styles.heading}>Suggested Profiles</Text>
           {data.map((item) => (
             <TouchableOpacity
               key={item.id}
               style={styles.cardContainer}
-              onPress={() =>
-                navigation.navigate("Profile", { name: item.name })
-              }
+              onPress={() => setIsBoxClicked(true)}
             >
-              <Image source={item.background} style={styles.cardImage} />
-
-              <View style={styles.cardContent}>
-                <Image source={item.profileImage} style={styles.avatar} />
-                <View style={styles.cardTextContainer}>
-                  <Text style={styles.cardName}>{item.name}</Text>
-                  <Text style={styles.cardDistance}>{item.distance}</Text>
+              <Image source={item.background} style={styles.backgroundImage} />
+              <View style={styles.overlay} />
+              <Image source={item.profileImage} style={styles.profileImage} />
+              <View style={styles.detailsContainer}>
+                <Text style={styles.name}>{item.name}</Text>
+                <View style={styles.details}>
+                  <Ionicons name="location" size={16} color="white" />
+                  <Text style={styles.distance}>{item.distance}</Text>
+                  <Ionicons name="star" size={16} color="white" />
+                  <Text style={styles.ranking}>{item.ranking}</Text>
                 </View>
-                <Text style={styles.cardRanking}>{item.ranking}</Text>
               </View>
             </TouchableOpacity>
           ))}
-        </View>
-      </ScrollView>
-      <BottomTabNavigator />
+        </ScrollView>
+        {isBoxClicked && (
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Home"
+              component={HomeContent}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Profile"
+              component={ProfileScreen}
+              options={({ route }) => ({
+                title: `${route.params.name}'s Profile`,
+              })}
+            />
+          </Stack.Navigator>
+        )}
+      </React.Fragment>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    backgroundColor: "#f2f2f2",
-    paddingVertical: 16,
-  },
-  root: {
     flex: 1,
-    paddingHorizontal: 16,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
+    justifyContent: "center",
+    backgroundColor: "#fff",
   },
-  title: {
+  heading: {
     fontSize: 24,
     fontWeight: "bold",
-  },
-  profileIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    overflow: "hidden",
-  },
-  profileImage: {
-    width: "100%",
-    height: "100%",
-    resizeMode: "cover",
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  searchInput: {
-    flex: 1,
-    height: 40,
-    borderWidth: 1,
-    borderColor: "#888",
-    borderRadius: 4,
-    paddingHorizontal: 12,
-    marginRight: 8,
-  },
-  filterIcon: {
-    padding: 8,
-    backgroundColor: "#eee",
-    borderRadius: 4,
-  },
-  titleContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  nearYouTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  viewMoreButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderWidth: 1,
-    borderColor: "#888",
-    borderRadius: 4,
-  },
-  viewMoreText: {
-    fontSize: 14,
-    color: "#888",
+    marginTop: 16,
+    marginBottom: 8,
   },
   cardContainer: {
-    marginBottom: 16,
-    backgroundColor: "#fff",
+    width: "90%",
+    height: 200,
+    marginVertical: 8,
     borderRadius: 8,
     overflow: "hidden",
-    elevation: 2,
   },
-  cardImage: {
+  backgroundImage: {
     width: "100%",
-    height: 200,
-    resizeMode: "cover",
+    height: "100%",
+    position: "absolute",
   },
-  cardContent: {
-    flexDirection: "row",
-    alignItems: "center",
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.4)",
+  },
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 2,
+    borderColor: "white",
+    position: "absolute",
+    bottom: 16,
+    left: 16,
+  },
+  detailsContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
     padding: 16,
   },
-  avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    marginRight: 12,
-  },
-  cardTextContainer: {
-    flex: 1,
-  },
-  cardName: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 4,
-  },
-  cardDistance: {
-    fontSize: 14,
-    color: "#888",
-  },
-  cardRanking: {
+  name: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#888",
+    color: "white",
+  },
+  details: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 8,
+  },
+  distance: {
+    marginLeft: 4,
+    marginRight: 16,
+    fontSize: 14,
+    color: "white",
+  },
+  ranking: {
+    fontSize: 14,
+    color: "white",
   },
 });
 

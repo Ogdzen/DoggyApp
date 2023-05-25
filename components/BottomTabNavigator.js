@@ -4,16 +4,10 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 import HomeScreen from "./HomeScreen/HomeScreen";
 import SecondScreen from "./SecondScreen";
-import SignInScreen from "./screens/SignInScreen";
-import SignUpScreen from "./screens/SignUpScreen";
-import LottieAnimation from "./LottieAnimation";
-import ConfirmEmailScreen from "./screens/ConfirmEmailScreen/ConfirmEmailScreen";
-import ForgotPasswordScreen from "./screens/ForgotPasswordScreen/ForgotPasswordScreen";
-import ProfileScreen from "./ProfileScreen/ProfileScreen";
 
 const Tab = createBottomTabNavigator();
 
-function BottomTabNavigator() {
+const CustomBottomTabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -23,10 +17,6 @@ function BottomTabNavigator() {
             iconName = "home-outline";
           } else if (route.name === "Settings") {
             iconName = "settings-outline";
-          } else if (route.name === "Log In") {
-            iconName = "rocket-outline";
-          } else if (route.name === "Profile") {
-            iconName = "person";
           }
 
           return <Icon name={iconName} size={size} color={color} />;
@@ -41,6 +31,6 @@ function BottomTabNavigator() {
       <Tab.Screen name="Settings" component={SecondScreen} />
     </Tab.Navigator>
   );
-}
+};
 
-export default BottomTabNavigator;
+export default CustomBottomTabNavigator;
